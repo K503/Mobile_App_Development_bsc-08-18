@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/KEN/Documents/GitHub/ClassAttendance/app/src/main/res/drawable/roundedbutton.xml" value="0.2115" />
+        <entry key="..\:/Users/KEN/Documents/GitHub/ClassAttendance/app/src/main/res/layout/activity_create_account.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/KEN/Documents/GitHub/ClassAttendance/app/src/main/res/layout/activity_login.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/KEN/Documents/GitHub/ClassAttendance/app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="..\:/Users/KEN/Documents/GitHub/ClassAttendance/app/src/main/res/layout/activity_my_classes.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/KEN/Documents/GitHub/ClassAttendance/app/src/main/res/layout/activity_splash.xml" value="0.153125" />
+        <entry key="..\:/Users/KEN/Documents/GitHub/ClassAttendance/app/src/main/res/layout/activity_splash2.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/KEN/Documents/GitHub/ClassAttendance/app/src/main/res/layout/activity_student.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/KEN/Documents/GitHub/ClassAttendance/app/src/main/res/layout/activity_view_classes.xml" value="0.14628623188405798" />
+        <entry key="..\:/Users/KEN/Documents/GitHub/ClassAttendance/app/src/main/res/layout/class_dialogue.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/KEN/Documents/GitHub/ClassAttendance/app/src/main/res/layout/course_list.xml" value="0.11100244498777506" />
+        <entry key="..\:/Users/KEN/Documents/GitHub/ClassAttendance/app/src/main/res/layout/dialog.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/KEN/Documents/GitHub/ClassAttendance/app/src/main/res/layout/login_activity.xml" value="0.17074275362318841" />
+        <entry key="..\:/Users/KEN/Documents/GitHub/ClassAttendance/app/src/main/res/layout/my_classes.xml" value="0.1366120218579235" />
+        <entry key="..\:/Users/KEN/Documents/GitHub/ClassAttendance/app/src/main/res/layout/student_item.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/KEN/Documents/GitHub/ClassAttendance/app/src/main/res/layout/toolbar.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/KEN/Documents/GitHub/ClassAttendance/app/src/main/res/menu/student_menu.xml" value="0.20416666666666666" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

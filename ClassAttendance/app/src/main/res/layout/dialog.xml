@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:padding="16dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/titleDialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add new class"
+            android:textColor="#000000"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:layout_margin="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#000000"/>
+        <EditText
+            android:id="@+id/courseNameEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="course name"
+            android:layout_margin="8dp"
+            />
+        <EditText
+            android:id="@+id/courseCodeEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="course code"
+            android:layout_margin="8dp"
+            />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+            <Button
+                android:id="@+id/cancelBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="Cancel"
+                android:backgroundTint="#730A0A"/>
+
+            <Button
+                android:id="@+id/addBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:layout_alignParentRight="true"
+                android:text="Add"
+                android:backgroundTint="#730A0A"/>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

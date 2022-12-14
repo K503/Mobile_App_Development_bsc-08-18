@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "318088091353",
+    "project_id": "class-attendance-bb48c",
+    "storage_bucket": "class-attendance-bb48c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:318088091353:android:d0f0dabe2ecd4b1f4650c8",
+        "android_client_info": {
+          "package_name": "com.example.classattendance"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "318088091353-baq2hlvq56lp9n31acs9lfu2mb66esh8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvHzw74t8ZgyONcpKfsU0-p0EITgIXLVo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "318088091353-baq2hlvq56lp9n31acs9lfu2mb66esh8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <include
+        android:id="@+id/mainToolbar"
+        layout="@layout/toolbar" />
+
+
+    <Button
+        android:id="@+id/buttonViewstudent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/viewClasses"
+        android:layout_marginTop="17dp"
+        android:backgroundTint="#730A0A"
+        android:text="View student" />
+
+    <Button
+        android:id="@+id/createClass"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/buttonlogout"
+        android:layout_alignLeft="@+id/takeAttendance"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="#730A0A"
+        android:text="Create class" />
+
+    <Button
+        android:id="@+id/buttonlogout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/createClass"
+        android:layout_alignParentBottom="true"
+        android:backgroundTint="#730A0A"
+        android:text="Logout" />
+
+    <Button
+        android:id="@+id/takeAttendance"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/createClass"
+        android:layout_alignLeft="@+id/buttonViewstudent"
+        android:layout_marginBottom="14dp"
+        android:backgroundTint="#730A0A"
+        android:text="take attendance" />
+
+    <Button
+        android:id="@+id/viewClasses"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/mainToolbar"
+        android:layout_alignLeft="@+id/buttonViewstudent"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="77dp"
+        android:backgroundTint="#730A0A"
+        android:text="View classes" />
+
+    <Button
+        android:id="@+id/attendancePerStudentButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/buttonViewstudent"
+        android:layout_marginTop="19dp"
+        android:backgroundTint="#730A0A"
+        android:text="Attendance Of Student" />
+
+
+</RelativeLayout>

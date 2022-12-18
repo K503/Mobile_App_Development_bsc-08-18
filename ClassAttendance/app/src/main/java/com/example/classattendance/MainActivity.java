@@ -16,11 +16,12 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-        //Button myClass;
+        Button logout;
         Button viewClass;
         Button viewStudent;
         Toolbar toolbar;
@@ -34,10 +35,18 @@ public class MainActivity extends AppCompatActivity {
        // myClass = (Button) findViewById(R.id.createClass);
         viewClass = (Button) findViewById(R.id.viewClasses);
         viewStudent = (Button) findViewById(R.id.buttonViewstudent);
+        logout = (Button) findViewById(R.id. buttonlogout);
+
 
         viewClass.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, viewClasses.class)));
         viewStudent.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, StudentActivity.class)));
         setToolbar();
+    }
+
+    public void logout(View view){
+        FirebaseAuth.getInstance().signOut();
+        startActivity(new Intent(getApplicationContext(),Login.class));
+        finish();
     }
 
     private void setToolbar() {

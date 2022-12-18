@@ -59,12 +59,12 @@ public class StudentActivity extends AppCompatActivity {
     private void loadData() {
         Cursor cursor = dbHelper.getStudentTable(class_id);
         studentItems.clear();
-        while (cursor.moveToNext()){
+//        while (cursor.moveToNext()){
 //            long sid = cursor.getLong(cursor.getColumnIndex(DbHelper.S_ID));
 //            int roll = cursor.getInt(cursor.getInt(cursor.getColumnIndex(DbHelper.STUDENT_ROLL_KEY)));
 //            String name = cursor.getString(cursor.getColumnIndex(DbHelper.STUDENT_NAME_KEY));
 //            studentItems.add(new StudentItem(sid,roll,name));
-        }
+//        }
         cursor.close();
     }
 

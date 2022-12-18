@@ -37,7 +37,8 @@
         android:layout_alignLeft="@+id/createClass"
         android:layout_alignParentBottom="true"
         android:backgroundTint="#730A0A"
-        android:text="Logout" />
+        android:text="Logout"
+        android:onClick="logout"/>
 
     <Button
         android:id="@+id/takeAttendance"

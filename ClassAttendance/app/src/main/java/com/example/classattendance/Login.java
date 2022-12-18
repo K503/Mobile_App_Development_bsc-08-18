@@ -5,10 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -34,77 +36,42 @@ public class Login extends AppCompatActivity {
             Password = (EditText) findViewById(R.id.password);
             createAccount= (TextView) findViewById(R.id.createAccount);
 
-            login.setOnClickListener(view -> loginUser());
             createAccount.setOnClickListener(view -> startActivity(new Intent(Login.this, createAccount.class)));
 
-//        login.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View view) {
-//                if (Email.getText().toString().equals("me@gmail.com") && password.getText().toString().equals("1234")){
-//                    //correct
-//                    Toast.makeText(loginActivity.this, "login successful", Toast.LENGTH_SHORT).show();
-//                }
-//                else{
-//                    //incorrect
-//                    Toast.makeText(loginActivity.this, "login failed", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//
-//        });
-        }
-        void loginUser(){
-            //take user information
-            String email = Email.getText().toString();
-            String password = Password.getText().toString();
+            login.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String email = Email.getText().toString().trim();
+                    String password = Password.getText().toString().trim();
 
-            boolean isValidated = validateData(email, password);
-            if(!isValidated){
-                return;
-            }
-            loginAccountInFirebase(email,password);
-        }
-
-        void loginAccountInFirebase(String email, String password){
-
-            authentication.signInWithEmailAndPassword(email,password).addOnCompleteListener(this, task -> {
-            if (task.isSuccessful()){
-                //login is successful
-                    if(authentication.getCurrentUser().isEmailVerified()){
-                        //go to menu
-                        startActivity(new Intent(Login.this, MainActivity.class));
-
-                    }else{
-                        //email not verified
-                        Utility.showToast(Login.this, "the email is not verified");
+                    if (TextUtils.isEmpty(email)){
+                        Email.setError("Email is required");
+                        return;
                     }
-            }else{
-                //log in failed
-                Utility.showToast(Login.this, task.getException().getLocalizedMessage());
-            }
+                    if (TextUtils.isEmpty(password)){
+                        Password.setError("password is required");
+                        return;
+                    }
+                    if (password.length() < 6){
+                        Password.setError("password too short");
+                    }
+
+                    // authentication
+                    authentication.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                           if(task.isSuccessful()){
+                               Toast.makeText(Login.this, "successfully logged in", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getApplicationContext(),MainActivity.class));
+                        }
+                        else{
+                               Toast.makeText(Login.this, "Error!" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                           }
+                        }
+
+                    });
+                }
             });
-
-
-        }
-
-        void changeInProgress(boolean inProgress){
-            if(inProgress){
-                login.setVisibility(View.VISIBLE);
-            }else{
-                login.setVisibility(View.VISIBLE);
-            }
-        }
-
-        boolean validateData(String email, String password){
-            // this will validate the data for the user logging in
-            if(!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-                Email.setError("invalid email");
-                return false;
-            }
-            if(password.length() < 7){
-                Password.setError("password length is invalid");
-                return false;
-            }
-            return true;
-        }
     }
+}
+

@@ -104,12 +104,23 @@
         android:textColor="@color/black"
         android:textColorHint="@color/black"
         android:textSize="22dp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/LOGIN"
+        android:layout_below="@id/Fullname"
+        android:hint="Already Registered? login here"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:layout_marginLeft="30dp"
+        android:textColor="@color/black"
+        />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/signupBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/Fullname"
+        android:layout_below="@+id/LOGIN"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"

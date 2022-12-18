@@ -4,8 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import android.database.CursorWindow;
+import java.lang.reflect.Field;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +28,9 @@ public class StudentActivity extends AppCompatActivity {
     private StudentAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<StudentItem> studentItems = new ArrayList<>();
+    private DbHelper dbHelper;
+    private int class_id;
+
 
 
     @Override
@@ -31,19 +38,46 @@ public class StudentActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student);
 
+        dbHelper = new DbHelper(this);
         Intent intent = getIntent();
         courseName = intent.getStringExtra("courseName");
         courseCode = intent.getStringExtra("courseCode");
         position = intent.getIntExtra("position", -1);
-
+        class_id =  intent.getIntExtra("class_id", -1);
+        loadData();
         recyclerView = findViewById(R.id.student_recycler);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new StudentAdapter(this,studentItems);
         recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(position -> changeStatus(position));
+
         setToolbar();
     }
+
+    private void loadData() {
+        Cursor cursor = dbHelper.getStudentTable(class_id);
+        studentItems.clear();
+        while (cursor.moveToNext()){
+//            long sid = cursor.getLong(cursor.getColumnIndex(DbHelper.S_ID));
+//            int roll = cursor.getInt(cursor.getInt(cursor.getColumnIndex(DbHelper.STUDENT_ROLL_KEY)));
+//            String name = cursor.getString(cursor.getColumnIndex(DbHelper.STUDENT_NAME_KEY));
+//            studentItems.add(new StudentItem(sid,roll,name));
+        }
+        cursor.close();
+    }
+
+    private void changeStatus(int position) {
+        String status = studentItems.get(position).getStatus();
+        if (status.equals("P")) status = "A";
+
+        else status = "P";
+
+        studentItems.get(position).setStatus(status);
+        adapter.notifyItemChanged(position);
+    }
+
     private void setToolbar() {
         toolbar = findViewById(R.id.toolBar);
         TextView title = toolbar.findViewById(R.id.titleToolBar);
@@ -73,8 +107,11 @@ public class StudentActivity extends AppCompatActivity {
         dialog.setListener((roll,name) -> addStudent(roll,name));
     }
 
-    private void addStudent(String roll, String name) {
-        studentItems.add(new StudentItem(roll, name));
-        adapter.notifyItemChanged(studentItems.size()-1);
+    private void addStudent(String roll_string, String name) {
+        int roll = Integer.parseInt(roll_string);
+        long sid = dbHelper.addStudent(class_id,roll,name);
+        StudentItem studentItem =  new StudentItem(sid,roll,name);
+        studentItems.add(studentItem);
+        adapter.notifyDataSetChanged();
     }
 }

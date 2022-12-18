@@ -16,6 +16,7 @@ import androidx.fragment.app.DialogFragment;
 public class MyDialog extends DialogFragment {
 
     public static final String CLASS_ADD_DIALOG="addClass";
+    public static final String CLASS_UPDATE_DIALOG="updateClass";
     public static final String STUDENT_ADD_DIALOG="addStudent";
 
     private onClickListener listener;
@@ -34,7 +35,35 @@ public class MyDialog extends DialogFragment {
         Dialog dialog = null;
         if (getTag().equals(CLASS_ADD_DIALOG))dialog=getAddClassDialog();
         if (getTag().equals(STUDENT_ADD_DIALOG))dialog =getAddStudentDialog();
+        if (getTag().equals(CLASS_UPDATE_DIALOG))dialog =getUpdateClassDialog();
         return dialog;
+    }
+
+    private Dialog getUpdateClassDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.dialog, null);
+        builder.setView(view);
+        TextView title = view.findViewById(R.id.titleDialog);
+
+        title.setText("Update Class");
+        EditText courseName = view.findViewById(R.id.courseNameEdit);
+        EditText courseCode = view.findViewById(R.id.courseCodeEdit);
+
+        courseName.setHint("New Course Name");
+        courseCode.setHint("New Course Code");
+        Button cancel = view.findViewById(R.id.cancelBtn);
+        Button add = view.findViewById(R.id.addBtn);
+        add.setText("Update");
+
+        cancel.setOnClickListener(v -> dismiss());
+        add.setOnClickListener(v -> {
+            String course = courseName.getText().toString();
+            String code = courseCode.getText().toString();
+            listener.onclick(course,code);
+            dismiss();
+
+        });
+        return builder.create();
     }
 
     private Dialog getAddStudentDialog() {

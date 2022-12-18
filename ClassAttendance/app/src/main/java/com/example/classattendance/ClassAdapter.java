@@ -1,6 +1,7 @@
 package com.example.classattendance;
 
 import android.content.Context;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
     }
 
 
-    public static class ClassViewHolder extends RecyclerView.ViewHolder{
+    public static class ClassViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener{
         TextView courseName;
         TextView courseCode;
         public ClassViewHolder(@NonNull View itemView, onItemClickListener onItemClickListener) {
@@ -39,7 +40,13 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
             courseName = itemView.findViewById(R.id.course_textview);
             courseCode = itemView.findViewById(R.id.code_textview);
             itemView.setOnClickListener(view -> onItemClickListener.onClick(getAdapterPosition()));
+            itemView.setOnCreateContextMenuListener(this);
+        }
 
+        @Override
+        public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+            contextMenu.add(getAdapterPosition(),0,0,"EDIT");
+            contextMenu.add(getAdapterPosition(),1,0,"DELETE");
         }
     }
 

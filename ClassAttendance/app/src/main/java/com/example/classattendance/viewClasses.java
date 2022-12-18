@@ -1,13 +1,17 @@
 package com.example.classattendance;
 
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -22,15 +26,21 @@ public class viewClasses extends AppCompatActivity {
     ClassAdapter classAdapter;
     RecyclerView.LayoutManager layoutManager;
     ArrayList<MyClasses> myClasses = new ArrayList<>();
+    ArrayList<StudentItem> studentItems = new ArrayList<>();
     Toolbar toolbar;
+    DbHelper dbHelper;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_classes);
 
+
+        dbHelper = new DbHelper(this);
         createClassBtn = findViewById(R.id.createClassBtn);
         createClassBtn.setOnClickListener(v -> showDialog());
+
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -41,6 +51,22 @@ public class viewClasses extends AppCompatActivity {
         recyclerView.setAdapter(classAdapter);
         classAdapter.setOnItemClickListener(position -> gotoitemActivity(position));
         setToolbar();
+        loadData();
+    }
+
+    private void loadData() {
+        Cursor cursor = dbHelper.getClassTable();
+
+        myClasses.clear();
+        while (cursor.moveToNext()){
+
+            long id =cursor.getInt(cursor.getColumnIndex(DbHelper.C_ID));
+            String courseName = cursor.getString(cursor.getColumnIndex(DbHelper.COURSE_NAME_KEY));
+            String courseCode = cursor.getString(cursor.getColumnIndex(DbHelper.COURSE_CODE_KEY));
+
+            myClasses.add(new MyClasses(courseName,courseCode,id));
+
+        }
     }
 
     private void setToolbar() {
@@ -62,6 +88,7 @@ public class viewClasses extends AppCompatActivity {
         intent.putExtra("courseName", myClasses.get(position).getCourseName());
         intent.putExtra("courseCode", myClasses.get(position).getCourseCode());
         intent.putExtra("position",position);
+        intent.putExtra("class_id",myClasses.get(position).getClass_id());
         startActivity(intent);
     }
 
@@ -95,7 +122,42 @@ public class viewClasses extends AppCompatActivity {
     }
 
     private void addClass(String courseName, String courseCode) {
-        myClasses.add(new MyClasses(courseName, courseCode));
+        long class_id = dbHelper.addClass(courseName,courseCode);
+        MyClasses myClass = new MyClasses(courseName,courseCode,class_id);
+        myClasses.add(myClass);
         classAdapter.notifyDataSetChanged();
+
+
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case 0:
+                showUpdateDialog(item.getGroupId());
+            case 1:
+                deleteClass(item.getGroupId());
+        }
+        return super.onContextItemSelected(item);
+    }
+
+    private void showUpdateDialog(int position) {
+        MyDialog dialog = new MyDialog();
+        dialog.show(getSupportFragmentManager(),MyDialog.CLASS_UPDATE_DIALOG);
+        dialog.setListener((courseName,courseCode) -> updateClass(position,courseName,courseCode));
+    }
+
+    private void updateClass(int position, String courseName, String courseCode) {
+        dbHelper.updateClass(myClasses.get(position).getClass_id(),courseName,courseCode);
+        myClasses.get(position).setCourseName(courseName);
+        myClasses.get(position).setCourseCode(courseCode);
+        classAdapter.notifyItemChanged(position);
+
+    }
+
+    private void deleteClass(int position) {
+        dbHelper.deleteClass(myClasses.get(position).getClass_id());
+        myClasses.remove(position);
+        classAdapter.notifyItemRemoved(position);
     }
 }

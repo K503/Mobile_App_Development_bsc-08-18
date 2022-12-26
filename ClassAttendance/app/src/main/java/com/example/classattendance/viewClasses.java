@@ -31,6 +31,7 @@ public class viewClasses extends AppCompatActivity {
     DbHelper dbHelper;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,6 +125,8 @@ public class viewClasses extends AppCompatActivity {
     private void addClass(String courseName, String courseCode) {
         long class_id = dbHelper.addClass(courseName,courseCode);
         MyClasses myClass = new MyClasses(courseName,courseCode,class_id);
+        //MyClasses.Builder builder = new MyClasses.Builder();
+       // MyClasses myClasses = builder.courseName(courseName).courseCode(courseCode).class_id(class_id).Build();
         myClasses.add(myClass);
         classAdapter.notifyDataSetChanged();
 

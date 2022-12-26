@@ -1,6 +1,7 @@
 package com.example.classattendance;
 import android.content.Context;
 import android.graphics.Color;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,11 +33,12 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
     }
 
 
-    public static class StudentViewHolder extends RecyclerView.ViewHolder{
+    public static class StudentViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener{
         TextView roll;
         TextView name;
         TextView status;
         CardView cardView;
+
         public StudentViewHolder(@NonNull View itemView, onItemClickListener onItemClickListener) {
             super(itemView);
             roll = itemView.findViewById(R.id.roll);
@@ -44,7 +46,13 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
             status = itemView.findViewById(R.id.status);
             cardView = itemView.findViewById(R.id.cardview);
             itemView.setOnClickListener(view -> onItemClickListener.onClick(getAdapterPosition()));
+            itemView.setOnCreateContextMenuListener(this);
+        }
 
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+            menu.add(getAdapterPosition(), 0,0, "EDIT");
+            menu.add(getAdapterPosition(), 1,0, "DELETE");
         }
     }
 

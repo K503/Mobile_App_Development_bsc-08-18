@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
         Button logout;
-        Button viewClass;
+        Button viewClass, createClass;
         Button viewStudent;
         Toolbar toolbar;
 
@@ -35,11 +35,13 @@ public class MainActivity extends AppCompatActivity {
        // myClass = (Button) findViewById(R.id.createClass);
         viewClass = (Button) findViewById(R.id.viewClasses);
         viewStudent = (Button) findViewById(R.id.buttonViewstudent);
+        createClass = (Button) findViewById(R.id.createClass);
         logout = (Button) findViewById(R.id. buttonlogout);
 
 
         viewClass.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, viewClasses.class)));
         viewStudent.setOnClickListener(view -> startActivity(new Intent(MainActivity.this, StudentActivity.class)));
+        createClass.setOnClickListener(view -> startActivity(new Intent(this, viewClasses.class)));
         setToolbar();
     }
 

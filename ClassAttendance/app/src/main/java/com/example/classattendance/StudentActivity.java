@@ -1,5 +1,6 @@
 package com.example.classattendance;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -29,7 +30,9 @@ public class StudentActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<StudentItem> studentItems = new ArrayList<>();
     private DbHelper dbHelper;
-    private int class_id;
+    private long class_id;
+    private MyCalendar calendar;
+    private TextView subtitle;
 
 
 
@@ -43,8 +46,10 @@ public class StudentActivity extends AppCompatActivity {
         courseName = intent.getStringExtra("courseName");
         courseCode = intent.getStringExtra("courseCode");
         position = intent.getIntExtra("position", -1);
-        class_id =  intent.getIntExtra("class_id", -1);
+        class_id =  intent.getLongExtra("class_id", -1);
+        calendar =  new MyCalendar();
         loadData();
+
         recyclerView = findViewById(R.id.student_recycler);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
@@ -52,19 +57,20 @@ public class StudentActivity extends AppCompatActivity {
         adapter = new StudentAdapter(this,studentItems);
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(position -> changeStatus(position));
-
         setToolbar();
+        loadStatusData();
     }
 
     private void loadData() {
         Cursor cursor = dbHelper.getStudentTable(class_id);
         studentItems.clear();
-//        while (cursor.moveToNext()){
-//            long sid = cursor.getLong(cursor.getColumnIndex(DbHelper.S_ID));
-//            int roll = cursor.getInt(cursor.getInt(cursor.getColumnIndex(DbHelper.STUDENT_ROLL_KEY)));
-//            String name = cursor.getString(cursor.getColumnIndex(DbHelper.STUDENT_NAME_KEY));
-//            studentItems.add(new StudentItem(sid,roll,name));
-//        }
+
+        while (cursor.moveToNext()){
+            @SuppressLint("Range") long sid = cursor.getLong(cursor.getColumnIndex(DbHelper.S_ID));
+            @SuppressLint("Range") int roll = cursor.getInt(cursor.getColumnIndex(DbHelper.STUDENT_ROLL_KEY));
+            @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex(DbHelper.STUDENT_NAME_KEY));
+            studentItems.add(new StudentItem(sid,roll,name));
+        }
         cursor.close();
     }
 
@@ -81,12 +87,14 @@ public class StudentActivity extends AppCompatActivity {
     private void setToolbar() {
         toolbar = findViewById(R.id.toolBar);
         TextView title = toolbar.findViewById(R.id.titleToolBar);
-        TextView subtitle = toolbar.findViewById(R.id.subtitleToolBar);
+        subtitle = toolbar.findViewById(R.id.subtitleToolBar);
+
         ImageButton back = toolbar.findViewById(R.id.back);
         ImageButton save = toolbar.findViewById(R.id.save);
+        save.setOnClickListener(v->saveStatus());
 
         title.setText(courseName);
-        subtitle.setText(courseCode);
+        subtitle.setText(courseName+" | "+calendar.getDate());
         back.setOnClickListener(view ->onBackPressed());
 
         toolbar.inflateMenu(R.menu.student_menu);
@@ -94,11 +102,55 @@ public class StudentActivity extends AppCompatActivity {
 
     }
 
+    private void saveStatus() {
+        for(StudentItem studentItem : studentItems){
+            String status = studentItem.getStatus();
+            if (status != "P") status = "A";
+            long value = dbHelper.addStatus(studentItem.getSid(),class_id, calendar.getDate(),status);
+
+            if (value == -1)dbHelper.updateStatus(studentItem.getSid(),calendar.getDate(),status);
+        }
+    }
+
+    private void loadStatusData(){
+        for(StudentItem studentItem : studentItems){
+            String status = dbHelper.getStatus(studentItem.getSid(),calendar.getDate());
+            if (status != null) studentItem.setStatus(status);
+            else studentItem.setStatus("");
+        }
+        adapter.notifyDataSetChanged();
+    }
+
     private boolean onMenuItemClick(MenuItem menuItem) {
         if (menuItem.getItemId()==R.id.add_student){
             showAddStudentDialogue();
+
         }
+        else if (menuItem.getItemId()==R.id.calendar){
+            showCalendar();
+        }
+        else if (menuItem.getItemId()==R.id.show_attendance_sheet){
+            openSheetList();
+        }
+
         return true;
+    }
+
+    private void openSheetList() {
+        Intent intent = new Intent(this, Sheet_Activity.class);
+        intent.putExtra("class id",class_id);
+        startActivity(intent);
+    }
+
+    private void showCalendar() {
+        calendar.show(getSupportFragmentManager(),"");
+        calendar.setOnCalendarOkClickListener(this::onCalendarOkClicked);
+    }
+
+    private void onCalendarOkClicked(int year, int month, int day) {
+        calendar.setDate(year,month,day);
+        subtitle.setText(courseName+ " | "+calendar.getDate());
+        loadStatusData();
     }
 
     private void showAddStudentDialogue() {
@@ -113,5 +165,34 @@ public class StudentActivity extends AppCompatActivity {
         StudentItem studentItem =  new StudentItem(sid,roll,name);
         studentItems.add(studentItem);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public boolean onContextItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case 0:
+                showUpdateStudentDialogue(item.getGroupId());
+            case 1:
+                deleteStudent(item.getGroupId());
+        }
+        return super.onContextItemSelected(item);
+    }
+
+    private void showUpdateStudentDialogue(int position) {
+        MyDialog dialog = new MyDialog(studentItems.get(position).getRoll(),studentItems.get(position).getName());
+        dialog.show(getSupportFragmentManager(),MyDialog.STUDENT_UPDATE_DIALOG);
+        dialog.setListener((roll_string,name)->updateStudent(position,name));
+    }
+
+    private void updateStudent(int position,String name) {
+        dbHelper.updateStudent(studentItems.get(position).getSid(),name);
+        studentItems.get(position).setName(name);
+        adapter.notifyItemChanged(position);
+    }
+
+    private void deleteStudent(int position) {
+        dbHelper.deleteStudent(studentItems.get(position).getSid());
+        studentItems.remove(position);
+        adapter.notifyItemRemoved(position);
     }
 }

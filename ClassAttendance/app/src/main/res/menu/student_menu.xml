@@ -4,4 +4,12 @@
         android:id="@+id/add_student"
         android:title="ADD STUDENT"
         />
+    <item
+        android:id="@+id/calendar"
+        android:title="Change Date"
+        />
+    <item
+        android:id="@+id/show_attendance_sheet"
+        android:title="Attendance Sheet"
+        />
 </menu>

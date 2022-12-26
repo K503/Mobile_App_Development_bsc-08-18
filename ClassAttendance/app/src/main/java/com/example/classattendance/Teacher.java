@@ -30,6 +30,10 @@ public class Teacher {
             this.name = name;
             return this;
         }
+        public Builder email(String email){
+            this.email=email;
+            return this;
+        }
 
         public Teacher Build(){
             return new Teacher(id,name,email);

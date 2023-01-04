@@ -36,7 +36,7 @@ public class Sheet_Activity extends AppCompatActivity {
 
         Log.i("1234567890","loadListItems" + cursor.getCount());
         while (cursor.moveToNext()){
-            String date = cursor.getString(cursor.getColumnIndex(DbHelper.DATE_KEY));
+            @SuppressLint("Range") String date = cursor.getString(cursor.getColumnIndex(DbHelper.DATE_KEY));
             listItems.add(date.substring(3));
         }
     }
